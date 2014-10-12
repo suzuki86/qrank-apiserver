@@ -4,7 +4,7 @@ require 'json_expressions/rspec'
 describe API do
   describe "GET /api/v1/entries" do
     it "shows expected entries" do
-      FactoryGirl.create(:user)
+      FactoryGirl.create(:user_tanaka)
       FactoryGirl.create(:user_yamada)
       FactoryGirl.create(:user_suzuki)
       pattern = [
@@ -75,7 +75,7 @@ describe API do
 
   describe "GET /api/v1/entries?tag=php" do
     it "shows expected entries filtered by php" do
-      FactoryGirl.create(:user)
+      FactoryGirl.create(:user_tanaka)
       FactoryGirl.create(:user_yamada)
       FactoryGirl.create(:user_suzuki)
       pattern = [
@@ -128,7 +128,7 @@ describe API do
 
   describe "GET /api/v1/entries?orderby=comment_count" do
     it "shows expected entries ordered by commnet_count" do
-      FactoryGirl.create(:user)
+      FactoryGirl.create(:user_tanaka)
       FactoryGirl.create(:user_yamada)
       FactoryGirl.create(:user_suzuki)
       pattern = [
@@ -228,7 +228,7 @@ describe API do
 
   describe 'GET /api/v1/users' do
     it "shows expected users" do
-      FactoryGirl.create(:user)
+      FactoryGirl.create(:user_tanaka)
       pattern = [
         {
           id: 1,

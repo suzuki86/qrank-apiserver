@@ -1,6 +1,6 @@
 FactoryGirl.define do
 
-  factory :user, :class => User do
+  factory :user_tanaka, :class => User do
     id 1
     user_name "tanaka"
     following_users 33
@@ -30,6 +30,17 @@ FactoryGirl.define do
     items 11
     entries {[
        FactoryGirl.create(:entry, :entry_3)
+    ]}
+  end
+
+  factory :user_takeuchi, :class => User do
+    id 4
+    user_name "takeuchi"
+    following_users 100
+    followers 14
+    items 66
+    entries {[
+       FactoryGirl.create(:entry, :entry_4)
     ]}
   end
 
@@ -78,6 +89,21 @@ FactoryGirl.define do
       after(:create) do |entry|
         create(:entries_tag, entry: entry, tag: create(:tag, :tag_php))
         create(:entries_tag, entry: entry, tag: create(:tag, :tag_ruby))
+      end
+    end
+
+    trait :entry_4 do
+      id 4
+      title "テストエントリー(2014-09-30 00:00:00)"
+      uuid "aabbccdd"
+      stock_count 33
+      hatebu_count 44
+      comment_count 55
+      entry_created "2014-09-30 00:00:00"
+      created_at "2014-09-30 00:00:00"
+      updated_at "2014-09-30 00:00:00"
+      after(:create) do |entry|
+        create(:entries_tag, entry: entry, tag: create(:tag, :tag_php))
       end
     end
 

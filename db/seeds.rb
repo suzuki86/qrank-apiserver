@@ -6,6 +6,15 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+require 'factory_girl'
+Dir[Rails.root.join('spec/support/factories/*.rb')].each {|f| require f }
+
+FactoryGirl.create(:user_tanaka)
+FactoryGirl.create(:user_yamada)
+FactoryGirl.create(:user_suzuki)
+FactoryGirl.create(:user_takeuchi)
+
+=begin
 users = {}
 users[:tanaka] = User.create(:user_name => "tanaka", :following_users => 10, :followers => 5, :items => 30)
 users[:yamada] = User.create(:user_name => "yamada", :following_users => 13, :followers => 88, :items => 60)
@@ -23,7 +32,6 @@ entry = users[:tanaka].entries.create(
 )
 entry.tags.create(:tag_name => "ruby")
 
-=begin
 entry = users[:yamada].entries.create(
   :title => "テストエントリー(2014-09-01 00:00:00)",
   :uuid => "aabbccdd",
