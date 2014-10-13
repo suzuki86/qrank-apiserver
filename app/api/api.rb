@@ -28,7 +28,7 @@ class API < Grape::API
         unless where.empty? then
           where += " AND"
         end
-        where += ' str_to_date(entries.entry_created, "%Y-%m-%d %H:%i:%s") > NOW() - INTERVAL ' + params[:days].to_s + ' DAY'
+        where += ' str_to_date(entries.entry_created, "%Y-%m-%d %H:%i:%s") > NOW() - INTERVAL :days DAY'
       end
 
       if params[:user_id] then
@@ -39,9 +39,17 @@ class API < Grape::API
       end
 
       if params[:tag] then
-        Entry.joins(:tags).order(orderby.to_sym => :desc).where(where, { :tag => params[:tag], :user_id => params[:user_id] }).as_json(:include => :tags)
+        Entry
+          .joins(:tags)
+          .order(orderby.to_sym => :desc)
+          .where(where, { :tag => params[:tag], :user_id => params[:user_id], :days => params[:days] })
+          .as_json(:include => :tags)
       else
-        Entry.order(orderby.to_sym => :desc).where(where, { :user_id => params[:user_id] }).page(params[:page]).as_json(:include => :tags)
+        Entry
+          .order(orderby.to_sym => :desc)
+          .where(where, { :user_id => params[:user_id], :days => params[:days] })
+          .page(params[:page])
+          .as_json(:include => :tags)
       end
     end
   end
