@@ -9,7 +9,7 @@ class API < Grape::API
       optional :orderby, type: String, desc: "Specify order"
       optional :tag, type: String, desc: "Filter by tag"
       optional :days, type: Integer, desc: "Filter by days"
-      optional :user, type: String, desc: "Filter by user"
+      optional :user_id, type: Integer, desc: "Filter by user"
     end
     get '/' do
       if params[:orderby] then
@@ -19,7 +19,7 @@ class API < Grape::API
       end
 
       if params[:tag] then
-        where = 'tags.tag_name = "' + params[:tag] + '"'
+        where = 'tags.tag_name = :tag'
       else
         where = ""
       end
@@ -31,17 +31,17 @@ class API < Grape::API
         where += ' str_to_date(entries.entry_created, "%Y-%m-%d %H:%i:%s") > NOW() - INTERVAL ' + params[:days].to_s + ' DAY'
       end
 
-      if params[:user] then
+      if params[:user_id] then
         unless where.empty? then
           where += " AND"
         end
-        where += ' entries.user_name = "' + params[:user] + '"'
+        where += ' entries.user_id = :user_id'
       end
 
       if params[:tag] then
-        Entry.joins(:tags).order(orderby.to_sym => :desc).where(where).as_json(:include => :tags)
+        Entry.joins(:tags).order(orderby.to_sym => :desc).where(where, { :tag => params[:tag], :user_id => params[:user_id] }).as_json(:include => :tags)
       else
-        Entry.order(orderby.to_sym => :desc).where(where).page(params[:page]).as_json(:include => :tags)
+        Entry.order(orderby.to_sym => :desc).where(where, { :user_id => params[:user_id] }).page(params[:page]).as_json(:include => :tags)
       end
     end
   end
