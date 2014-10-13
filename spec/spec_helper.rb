@@ -14,12 +14,27 @@
 # users commonly want.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+
+# ENV["RAILS_ENV"] ||= 'test'
+# require File.expand_path("../../config/environment", __FILE__)
+# require 'rspec/rails'
+# require 'rspec/autorun'
+
+ENV["RAILS_ENV"] ||= 'test'
+require 'spec_helper'
+require File.expand_path("../../config/environment", __FILE__)
+require 'rspec/rails'
+require 'rspec/autorun'
+
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+
 RSpec.configure do |config|
 
   # require 'rubygems'
   # ENV["RAILS_ENV"] ||= 'test'
   # require File.expand_path("../../config/environment", __FILE__)
   # require 'rspec/rails'
+  # require 'rspec/autorun'
 
   # config.include RSpec::Rails::RequestExampleGroup, type: :request, example_group: {
   #   file_path: /spec\/api/
