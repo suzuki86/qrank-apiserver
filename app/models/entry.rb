@@ -99,8 +99,12 @@ class Entry < ActiveRecord::Base
     end
   end
 
+  def self.get_oldest_user
+    User.order(:updated_at).first
+  end
+
   def self.update_user
-    user = User.order(:updated_at).first
+    user = get_oldest_user
     endpoint = "https://qiita.com/api/v1/users/" + user.user_name
     url = URI.parse(endpoint)
     response = Net::HTTP.get(url)
