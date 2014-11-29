@@ -19,9 +19,7 @@ class Entry < ActiveRecord::Base
     response = Net::HTTP.get_response(url)
     parsed_response = JSON.parse(response.body, symbolize_names: true)
 
-    tags = []
-    entries = []
-    users = []
+    tags = entries = users = []
     parsed_response.each do |entry|
       entry_url = "http://qiita.com/" + entry[:user][:url_name] + "/items/" + entry[:uuid]
       hatebu = self.get_hatebu(entry_url)
