@@ -8,6 +8,10 @@ class QrankRunner
     Entry.get_entries
   end
 
+  def self.update_entry
+    Entry.update_entry
+  end
+
   def self.update_user
     Entry.update_user
   end

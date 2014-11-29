@@ -72,6 +72,27 @@ class Entry < ActiveRecord::Base
     end
   end
 
+  def self.update_entry
+    entry = Entry.order(:updated_at).first
+    endpoint = "https://qiita.com/api/v1/items/" + entry.uuid
+    url = URI.parse(endpoint)
+    response = Net::HTTP.get_response(url)
+    if response.code == 200
+      parsed_response = JSON.parse(response.body, symbolize_names: true)
+      entry.update(
+        :id => parsed_response[:id],
+        :title => entry[:title],
+        :stock_count => entry[:stock_count] || 0,
+        :comment_count => entry[:comment_count] || 0,
+        :hatebu_count => hatebu
+      )
+    else
+      entry.update(
+        :updated_at => Time.now
+      )
+    end
+  end
+
   def self.update_user
     user = User.order(:updated_at).first
     endpoint = "https://qiita.com/api/v1/users/" + user.user_name
