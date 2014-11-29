@@ -74,8 +74,12 @@ class Entry < ActiveRecord::Base
     end
   end
 
+  def self.get_oldest_entry
+    Entry.order(:updated_at).first
+  end
+
   def self.update_entry
-    entry = Entry.order(:updated_at).first
+    entry = get_oldest_entry
     endpoint = "https://qiita.com/api/v1/items/" + entry.uuid
     url = URI.parse(endpoint)
     response = Net::HTTP.get_response(url)
