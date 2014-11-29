@@ -8,8 +8,13 @@ class Entry < ActiveRecord::Base
   belongs_to :user
   accepts_nested_attributes_for :tags
 
-  def self.get_entries
-    endpoint = "https://qiita.com/api/v1/items"
+  def self.get_entries(page)
+    endpoint = "https://qiita.com/api/v1/items?per_page=100"
+
+    if page then
+      endpoint = endpoint + "&page=" + page.to_s
+    end
+
     url = URI.parse(endpoint)
     response = Net::HTTP.get_response(url)
     parsed_response = JSON.parse(response.body, symbolize_names: true)
@@ -28,9 +33,8 @@ class Entry < ActiveRecord::Base
           :user_id => entry[:user][:id],
           :stock_count => entry[:stock_count] || 0,
           :comment_count => entry[:comment_count] || 0,
-          :hatebu_count => hatebu,
+          :hatebu_count => hatebu
         )
-
       else
         current_entry = Entry.new(
           :id => entry[:id],
