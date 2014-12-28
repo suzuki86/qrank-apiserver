@@ -6,10 +6,10 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-require 'factory_girl'
-Dir[Rails.root.join('spec/support/factories/*.rb')].each {|f| require f }
-
-FactoryGirl.create(:user_tanaka)
-FactoryGirl.create(:user_yamada)
-FactoryGirl.create(:user_suzuki)
-FactoryGirl.create(:user_takeuchi)
+# require 'factory_girl'
+# Dir[Rails.root.join('spec/support/factories/*.rb')].each {|f| require f }
+# 
+# FactoryGirl.create(:user_tanaka)
+# FactoryGirl.create(:user_yamada)
+# FactoryGirl.create(:user_suzuki)
+# FactoryGirl.create(:user_takeuchi)
