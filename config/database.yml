@@ -9,6 +9,9 @@ default: &default
   host: localhost
   username: 
   password:
+  collation: utf8mb4_general_ci
+  encoding: utf8mb4
+  charset: utf8mb4
 
 development:
   <<: *default
