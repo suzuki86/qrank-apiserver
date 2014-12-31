@@ -22,5 +22,5 @@
 set :environment, :production
 
 every 10.minutes do
-  runner 'QrankRunner.get_entries -e production'
+  runner 'QrankRunner.get_entries'
 end
