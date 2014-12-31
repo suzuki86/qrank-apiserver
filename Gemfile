@@ -44,6 +44,7 @@ gem 'grape'
 gem 'kaminari'
 gem 'grape-entity'
 gem 'rb-readline'
+gem 'whenever'
 
 group :development, :test do
   gem 'rspec-rails'
