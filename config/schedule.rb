@@ -30,5 +30,5 @@ every "3,13,23,33,43,53 * * * *" do
 end
 
 every "6,16,26,36,46,56 * * * *" do
-  runner 'QrankRunner.get_entries(51..100)'
+  runner 'QrankRunner.get_entries(rand(51..100))'
 end
