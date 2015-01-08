@@ -25,13 +25,15 @@ class Entry < ActiveRecord::Base
       hatebu = self.get_hatebu(entry_url)
 
       if Entry.find_by(:id => entry[:id]) then
-        entry.update(
-          :id => entry[:id],
-          :title => entry[:title],
-          :user_id => entry[:user][:id],
-          :stock_count => entry[:stock_count] || 0,
-          :comment_count => entry[:comment_count] || 0,
-          :hatebu_count => hatebu
+        Entry.update(
+          entry[:id],
+          {
+            :title => entry[:title],
+            :user_id => entry[:user][:id],
+            :stock_count => entry[:stock_count] || 0,
+            :comment_count => entry[:comment_count] || 0,
+            :hatebu_count => hatebu
+          }
         )
       else
         current_entry = Entry.new(
