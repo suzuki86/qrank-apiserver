@@ -113,9 +113,9 @@ class Entry < ActiveRecord::Base
     parsed_response = JSON.parse(response, symbolize_names: true)
     user.update(
       :id => parsed_response[:id],
-      :following_users => parsed_response[:following_users],
-      :followers => parsed_response[:followers],
-      :items => parsed_response[:items]
+      :following_users => parsed_response[:following_users] || 0,
+      :followers => parsed_response[:followers] || 0,
+      :items => parsed_response[:items] || 0
     )
   end
 
