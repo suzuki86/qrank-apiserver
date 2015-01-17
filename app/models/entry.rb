@@ -111,6 +111,7 @@ class Entry < ActiveRecord::Base
     url = URI.parse(endpoint)
     response = Net::HTTP.get(url)
     parsed_response = JSON.parse(response, symbolize_names: true)
+    user.touch
     user.update(
       :id => parsed_response[:id],
       :following_users => parsed_response[:following_users] || 0,
