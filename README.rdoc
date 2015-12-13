@@ -1,8 +1,0 @@
-# qrank-apiserver
-
-This application provides RESTful API for various purposes.
-
-## Features
-
-- Crawl Qiita API and store data.
-- Provide JSON API by using stored data.
