@@ -24,3 +24,11 @@ If page number is passed as argument, entries in the specified page are performe
 ```
 bundle exec rails runner QrankRunner.get_entries(2)
 ```
+
+#### QrankRunner#update_user
+
+Update record of the user who has the most oldest `updated_at`.
+
+```
+bundle exec rails runner QrankRunner.update_user
+```
