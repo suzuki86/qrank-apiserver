@@ -25,12 +25,8 @@ every 10.minutes do
   runner 'QrankRunner.get_entries'
 end
 
-every "3,13,23,33,43,53 * * * *" do
-  runner 'QrankRunner.get_entries(rand(2..50))'
-end
-
-every "6,16,26,36,46,56 * * * *" do
-  runner 'QrankRunner.get_entries(rand(51..100))'
+every 3.minutes do
+  runner 'QrankRunner.update_entry'
 end
 
 every "9,19,29,39,49,59 * * * *" do
