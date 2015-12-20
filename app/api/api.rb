@@ -70,35 +70,17 @@ class API < Grape::API
     params do
       optional :page, type: Integer, desc: "Specify page number"
       optional :orderby, type: String, desc: "Specify order"
-      optional :ranking, type: String, desc: "Specify ranking"
     end
-    get '/' do
+
+    get "/" do
       if params[:orderby] then
         orderby = params[:orderby]
       else
         orderby = "id"
       end
-
-      if params[:ranking] then
-
-        case params[:ranking]
-        when "stock" then
-          ranking = "stock_total"
-        when "hatebu" then
-          ranking = "hatebu_total"
-        when "item" then
-          ranking = "users.items"
-        end
-
-        User
-          .joins(:entries)
-          .select("users.id, users.user_name, sum(entries.stock_count) AS stock_total, sum(entries.hatebu_count) AS hatebu_total, users.items")
-          .group(:id)
-          .ranking_by(ranking)
-      else
-        User.order(orderby.to_sym => :desc).page(params[:page]).as_json(:include => :entries)
-      end
+      User.order(orderby.to_sym => :desc).page(params[:page]).as_json(:include => :entries)
     end
+
     get "/count" do
       User.count
     end
