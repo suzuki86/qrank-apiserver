@@ -97,4 +97,16 @@ class API < Grape::API
       end
     end
   end
+
+  resource :ranking do
+    get "/users/stock" do
+      User.ranking("stock_total")
+    end
+    get "/users/hatebu" do
+      User.ranking("hatebu_total")
+    end
+    get "/users/item" do
+      User.ranking("users.items")
+    end
+  end
 end
