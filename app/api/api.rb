@@ -96,6 +96,9 @@ class API < Grape::API
         User.order(orderby.to_sym => :desc).page(params[:page]).as_json(:include => :entries)
       end
     end
+    get "/count" do
+      User.count
+    end
   end
 
   resource :ranking do
