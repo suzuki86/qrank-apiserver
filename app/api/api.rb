@@ -11,7 +11,8 @@ class API < Grape::API
       optional :days, type: Integer, desc: "Filter by days"
       optional :user_id, type: Integer, desc: "Filter by user"
     end
-    get '/' do
+
+    get "/" do
       if params[:orderby] then
         orderby = params[:orderby]
       else
@@ -19,7 +20,7 @@ class API < Grape::API
       end
 
       if params[:tag] then
-        where = 'tags.tag_name = :tag'
+        where = "tags.tag_name = :tag"
       else
         where = ""
       end
@@ -35,23 +36,31 @@ class API < Grape::API
         unless where.empty? then
           where += " AND"
         end
-        where += ' entries.user_id = :user_id'
+        where += " entries.user_id = :user_id"
       end
 
       if params[:tag] then
         Entry
           .joins(:tags)
           .order(orderby.to_sym => :desc)
-          .where(where, { :tag => params[:tag], :user_id => params[:user_id], :days => params[:days] })
+          .where(where, {
+            :tag => params[:tag],
+            :user_id => params[:user_id],
+            :days => params[:days]
+          })
           .as_json(:include => :tags)
       else
         Entry
           .order(orderby.to_sym => :desc)
-          .where(where, { :user_id => params[:user_id], :days => params[:days] })
+          .where(where, {
+            :user_id => params[:user_id],
+            :days => params[:days]
+          })
           .page(params[:page])
           .as_json(:include => :tags)
       end
     end
+
     get "/count" do
       Entry.count
     end
@@ -61,7 +70,8 @@ class API < Grape::API
     params do
       optional :page, type: Integer, desc: "Specify page number"
     end
-    get '/' do
+
+    get "/" do
       Tag.order(:id => :desc).page(params[:page]).as_json(:include => :entries)
     end
   end
