@@ -52,6 +52,9 @@ class API < Grape::API
           .as_json(:include => :tags)
       end
     end
+    get "/count" do
+      Entry.count
+    end
   end
 
   resource :tags do
