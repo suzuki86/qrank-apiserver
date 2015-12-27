@@ -16,5 +16,6 @@ class User < ActiveRecord::Base
     ")
     .group(:id)
     .ranking_by(key)
+    .limit(100)
   end
 end
