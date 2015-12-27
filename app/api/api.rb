@@ -100,11 +100,24 @@ class API < Grape::API
     get "/users/stock" do
       User.ranking("stock_total")
     end
+
     get "/users/hatebu" do
       User.ranking("hatebu_total")
     end
+
     get "/users/item" do
       User.ranking("users.items")
+    end
+
+    get "/tags" do
+      Tag
+        .select("
+          tags.id,
+          tags.tag_name,
+          count(*) AS entries_count
+        ")
+        .group(:tag_name)
+        .order("entries_count DESC")
     end
   end
 end
