@@ -41,7 +41,7 @@ class API < Grape::API
 
       if params[:tag] then
         Entry
-          .joins(:tags)
+          .eager_load(:tags)
           .order(orderby.to_sym => :desc)
           .where(where, {
             :tag => params[:tag],
