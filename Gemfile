@@ -1,5 +1,6 @@
 source 'http://rubygems.org'
 
+gem 'json', '1.8.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.5'
@@ -38,7 +39,7 @@ gem 'spring',        group: :development
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-gem 'mysql2'
+gem 'mysql2', '0.3.17'
 gem 'activerecord-import'
 gem 'grape'
 gem 'kaminari'
