@@ -41,24 +41,23 @@ class API < Grape::API
 
       if params[:tag] then
         Entry
-          .eager_load(:tags, :user)
+          .eager_load(:tags)
           .order(orderby.to_sym => :desc)
           .where(where, {
             :tag => params[:tag],
             :user_id => params[:user_id],
             :days => params[:days]
           })
-          .as_json(:include => [:tags, :user])
+          .as_json(:include => :tags)
       else
         Entry
-          .eager_load(:tags, :user)
           .order(orderby.to_sym => :desc)
           .where(where, {
             :user_id => params[:user_id],
             :days => params[:days]
           })
           .page(params[:page])
-          .as_json(:include => [:tags, :user])
+          .as_json(:include => :tags)
       end
     end
 
@@ -90,12 +89,6 @@ class API < Grape::API
         orderby = "id"
       end
       User.order(orderby.to_sym => :desc).page(params[:page]).as_json(:include => :entries)
-    end
-
-    get "/:user_id" do
-        User.where("id = :user_id", {
-          :user_id => params[:user_id]
-        })
     end
 
     get "/count" do
