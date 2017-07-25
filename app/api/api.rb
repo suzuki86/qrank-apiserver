@@ -92,6 +92,12 @@ class API < Grape::API
       User.order(orderby.to_sym => :desc).page(params[:page]).as_json(:include => :entries)
     end
 
+    get "/:user_id" do
+        User.where("id = :user_id", {
+          :user_id => params[:user_id]
+        })
+    end
+
     get "/count" do
       User.count
     end
