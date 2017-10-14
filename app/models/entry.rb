@@ -30,7 +30,7 @@ class Entry < ActiveRecord::Base
           {
             :title => entry[:title],
             :user_id => entry[:user][:id],
-            :stock_count => entry[:stock_count] || 0,
+            :like_count => entry[:stock_count] || 0,
             :comment_count => entry[:comment_count] || 0,
             :hatebu_count => hatebu
           }
