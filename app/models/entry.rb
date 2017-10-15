@@ -9,40 +9,48 @@ class Entry < ActiveRecord::Base
   accepts_nested_attributes_for :tags
 
   def self.get_entries(page)
-    endpoint = "https://qiita.com/api/v1/items?per_page=100"
+    endpoint = "https://qiita.com/api/v2/items?per_page=100"
 
     if page then
       endpoint = endpoint + "&page=" + page.to_s
     end
 
     url = URI.parse(endpoint)
-    response = Net::HTTP.get_response(url)
+    http = Net::HTTP.new(url.host, url.port);
+    http.use_ssl = true
+    headers = {
+      "User-Agent" => "qrank",
+      "Authorization" => "Bearer " + Rails.application.secrets.qiita_api_key
+    }
+    response = http.get(url.path, headers)
+
     parsed_response = JSON.parse(response.body, symbolize_names: true)
 
     tags = entries = users = []
     parsed_response.each do |entry|
-      entry_url = "http://qiita.com/" + entry[:user][:url_name] + "/items/" + entry[:uuid]
+      entry_url = entry[:url]
       hatebu = self.get_hatebu(entry_url)
-
-      if Entry.find_by(:id => entry[:id]) then
+      saved_entry = Entry.find_by(:uuid => entry[:id])
+      if saved_entry then
         Entry.update(
-          entry[:id],
+          saved_entry[:id],
           {
             :title => entry[:title],
-            :user_id => entry[:user][:id],
-            :like_count => entry[:stock_count] || 0,
+            :url => entry[:url],
+            :user_id => entry[:user][:permanent_id],
+            :like_count => entry[:likes_count] || 0,
             :comment_count => entry[:comment_count] || 0,
             :hatebu_count => hatebu
           }
         )
       else
         current_entry = Entry.new(
-          :id => entry[:id],
           :title => entry[:title],
-          :uuid => entry[:uuid],
-          :user_id => entry[:user][:id],
-          :stock_count => entry[:stock_count] || 0,
-          :comment_count => entry[:comment_count] || 0,
+          :uuid => entry[:id],
+          :url => entry[:url],
+          :user_id => entry[:user][:permanent_id],
+          :like_count => entry[:likes_count] || 0,
+          :comment_count => entry[:comments_count] || 0,
           :hatebu_count => hatebu,
           :entry_created => Time.parse(entry[:created_at])
         )
@@ -50,12 +58,15 @@ class Entry < ActiveRecord::Base
 
         entry[:tags].each do |tag|
           current_entry.tags.create(
-            :tag_name => tag[:url_name]
+            :tag_name => tag[:name]
           )
         end
         users << User.new(
-          :id => entry[:user][:id],
-          :user_name => entry[:user][:url_name]
+          :id => entry[:user][:permanent_id],
+          :user_name => entry[:user][:id],
+          :following_users => entry[:user][:followees_count],
+          :followers => entry[:user][:followers_count],
+          :items => entry[:user][:items_count],
         )
       end
     end
@@ -82,15 +93,16 @@ class Entry < ActiveRecord::Base
 
   def self.update_entry
     entry = get_oldest_entry
-    endpoint = "https://qiita.com/api/v1/items/" + entry.uuid
+    endpoint = "https://qiita.com/api/v2/items/" + entry.uuid
     url = URI.parse(endpoint)
     response = Net::HTTP.get_response(url)
     if response.code == 200
       parsed_response = JSON.parse(response.body, symbolize_names: true)
       entry.update(
-        :id => parsed_response[:id],
+        :uuid => parsed_response[:id],
         :title => entry[:title],
-        :stock_count => entry[:stock_count] || 0,
+        :url => entry[:url],
+        :like_count => entry[:likes_count] || 0,
         :comment_count => entry[:comment_count] || 0,
         :hatebu_count => hatebu
       )
@@ -107,16 +119,16 @@ class Entry < ActiveRecord::Base
 
   def self.update_user
     user = get_oldest_user
-    endpoint = "https://qiita.com/api/v1/users/" + user.user_name
+    endpoint = "https://qiita.com/api/v2/users/" + user.user_name
     url = URI.parse(endpoint)
     response = Net::HTTP.get(url)
     parsed_response = JSON.parse(response, symbolize_names: true)
     user.touch
     user.update(
       :id => parsed_response[:id],
-      :following_users => parsed_response[:following_users] || 0,
-      :followers => parsed_response[:followers] || 0,
-      :items => parsed_response[:items] || 0
+      :following_users => parsed_response[:followers_count] || 0,
+      :followers => parsed_response[:followees_count] || 0,
+      :items => parsed_response[:items_count] || 0
     )
   end
 
