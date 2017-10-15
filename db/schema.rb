@@ -11,13 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140907115808) do
+ActiveRecord::Schema.define(version: 20171015153432) do
 
   create_table "entries", force: true do |t|
     t.integer  "user_id"
     t.string   "title"
     t.string   "uuid"
-    t.integer  "stock_count",   default: 0, null: false
+    t.string   "url"
+    t.integer  "like_count",    default: 0, null: false
     t.integer  "comment_count", default: 0, null: false
     t.integer  "hatebu_count",  default: 0, null: false
     t.datetime "entry_created"
