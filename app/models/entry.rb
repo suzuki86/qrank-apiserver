@@ -31,18 +31,17 @@ class Entry < ActiveRecord::Base
       entry_url = entry[:url]
       hatebu = self.get_hatebu(entry_url)
       saved_entry = Entry.find_by(:uuid => entry[:id])
+
       if saved_entry then
-        Entry.update(
-          saved_entry[:id],
-          {
-            :title => entry[:title],
-            :url => entry[:url],
-            :user_id => entry[:user][:permanent_id],
-            :like_count => entry[:likes_count] || 0,
-            :comment_count => entry[:comment_count] || 0,
-            :hatebu_count => hatebu
-          }
-        )
+        data = {
+          :title => entry[:title],
+          :url => entry[:url],
+          :user_id => entry[:user][:permanent_id],
+          :like_count => entry[:likes_count] || 0,
+          :comment_count => entry[:comment_count] || 0,
+          :hatebu_count => hatebu
+        }
+        Entry.update(saved_entry[:id], data)
       else
         current_entry = Entry.new(
           :title => entry[:title],
