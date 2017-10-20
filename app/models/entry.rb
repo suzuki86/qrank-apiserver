@@ -22,7 +22,7 @@ class Entry < ActiveRecord::Base
       "User-Agent" => "qrank",
       "Authorization" => "Bearer " + Rails.application.secrets.qiita_api_key
     }
-    response = http.get(url.path, headers)
+    response = http.get(endpoint, headers)
 
     parsed_response = JSON.parse(response.body, symbolize_names: true)
 
