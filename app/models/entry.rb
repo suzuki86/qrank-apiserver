@@ -28,7 +28,7 @@ class Entry < ActiveRecord::Base
 
     tags = entries = users = []
     parsed_response.each do |entry|
-      entry_url = entry[:url]
+      entry_url = entry[:url].gsub(/http:/, "https:")
       hatebu = self.get_hatebu(entry_url)
       saved_entry = Entry.find_by(:uuid => entry[:id])
 
