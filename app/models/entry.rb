@@ -11,7 +11,7 @@ class Entry < ActiveRecord::Base
   def self.get_entries(page)
     endpoint = "https://qiita.com/api/v2/items?per_page=100"
 
-    if page then
+    if page && page > 0 then
       endpoint = endpoint + "&page=" + page.to_s
     end
 

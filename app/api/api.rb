@@ -1,15 +1,20 @@
 class API < Grape::API
+  include Grape::Kaminari
+
   version 'v1'
   format :json
   prefix '/api'
 
   resource :entries do
+    paginate per_page: 20, max_per_page: 100
+
     params do
       optional :page, type: Integer, desc: "Specify page number"
       optional :orderby, type: String, desc: "Specify order"
       optional :tag, type: String, desc: "Filter by tag"
       optional :days, type: Integer, desc: "Filter by days"
       optional :user_id, type: Integer, desc: "Filter by user"
+      optional :per_page, type: Integer, desc: "Number of entries to be paginated."
     end
 
     get "/" do
@@ -40,7 +45,7 @@ class API < Grape::API
       end
 
       if params[:tag] then
-        Entry
+        entries = Entry
           .eager_load(:tags)
           .order(orderby.to_sym => :desc)
           .where(where, {
@@ -48,17 +53,17 @@ class API < Grape::API
             :user_id => params[:user_id],
             :days => params[:days]
           })
-          .as_json(:include => :tags)
       else
-        Entry
+        entries = Entry
           .order(orderby.to_sym => :desc)
           .where(where, {
             :user_id => params[:user_id],
             :days => params[:days]
           })
           .page(params[:page])
-          .as_json(:include => :tags)
       end
+
+      paginate(entries).as_json(:include => :tags)
     end
 
     get "/count" do
