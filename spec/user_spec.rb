@@ -15,10 +15,10 @@ describe User do
   end
 
   describe "#ranking" do
-    it "returns array of users that is sorted by stock_total in descending order"do
-      users = User.ranking("stock_total")
-      expect(users[0].stock_total > users[1].stock_total).to be true
-      expect(users.first.stock_total > users.last.stock_total).to be true
+    it "returns array of users that is sorted by like_total in descending order"do
+      users = User.ranking("like_total")
+      expect(users[0].like_total > users[1].like_total).to be true
+      expect(users.first.like_total > users.last.like_total).to be true
     end
 
     it "returns array of users that is sorted by hatebu_total in descending order"do

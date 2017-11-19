@@ -50,7 +50,7 @@ FactoryGirl.define do
       id 1
       title "テストエントリー(2014-09-01 00:00:00)"    
       uuid "aabbccdd"
-      stock_count 10
+      like_count 10
       hatebu_count 20
       comment_count 5
       entry_created "2014-09-01 00:00:00"
@@ -65,7 +65,7 @@ FactoryGirl.define do
       id 2
       title "テストエントリー(2014-09-22 00:00:00)"    
       uuid "aabbccdd"
-      stock_count 3
+      like_count 3
       hatebu_count 33
       comment_count 99
       entry_created "2014-09-22 00:00:00"
@@ -80,7 +80,7 @@ FactoryGirl.define do
       id 3
       title "テストエントリー(2014-09-10 00:00:00)"    
       uuid "aabbccdd"
-      stock_count 15
+      like_count 15
       hatebu_count 4
       comment_count 1
       entry_created "2014-09-10 00:00:00"
@@ -96,7 +96,7 @@ FactoryGirl.define do
       id 4
       title "テストエントリー(2014-09-30 00:00:00)"
       uuid "aabbccdd"
-      stock_count 33
+      like_count 33
       hatebu_count 44
       comment_count 55
       entry_created "2014-09-30 00:00:00"
