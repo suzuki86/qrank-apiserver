@@ -1,0 +1,10 @@
+language: ruby
+rvm:
+    - 2.3.1
+before_script:
+  - mv config/travis.secrets.yml config/secrets.yml
+  - mv config/travis.database.yml config/database.yml
+  - bundle install
+  - bundle exec rake db:create
+script:
+  - bundle exec rake spec
