@@ -2,6 +2,8 @@
 
 This application provides RESTful API for various purposes.
 
+[![Build Status](https://travis-ci.org/suzuki86/qrank-apiserver.svg?branch=master)](https://travis-ci.org/suzuki86/qrank-apiserver)
+
 ## Features
 
 - Crawl Qiita API and store data.
